@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  has_many :profiles, dependent: :destroy
 
   has_secure_password
 
@@ -35,6 +36,11 @@ class User < ApplicationRecord
       "#{self.first_name} #{self.last_name}"
   end
 
+    #   can have only 10 profiles
+    def can_create_profile?
+        self.profiles.count < 10
+    end
+
   private
 
   def parametrized_name
@@ -45,4 +51,5 @@ class User < ApplicationRecord
       token = [("a"..."z"), ("A"..."Z"), ("0"..."9")].map(&:to_a).flatten.map(&:to_s).freeze
       self.slug = "#{parametrized_name}-#{22.times.map { token.sample.downcase }.join}"
   end
+
 end

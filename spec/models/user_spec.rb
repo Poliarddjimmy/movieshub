@@ -84,4 +84,21 @@ RSpec.describe User, type: :model do
       expect(User.authenticate('test@example.com', 'wrongpassword')).to be_falsey
     end
   end
+
+  # should handle the profile limits for a user
+  describe '#can_create_profile?' do
+    let(:user) { User.create(email: 'test@example.com', password: 'password', first_name: 'John', last_name: 'Doe') }
+
+    it 'returns true when the user has less than 10 profiles' do
+      expect(user.can_create_profile?).to be_truthy
+    end
+
+    it 'returns false when the user has 10 profiles' do
+      10.times { user.profiles.create(name: 'Profile') }
+      expect(user.can_create_profile?).to be_falsey
+    end
+  end
+
+  # Associations
+  it { should have_many(:profiles).dependent(:destroy) }
 end
