@@ -14,6 +14,7 @@ class CreateMovies < ActiveRecord::Migration[6.1]
       t.timestamps                                      # Automatically adds created_at and updated_at
       t.string :slug, null: false                       # URL-friendly version of the movie title
       t.integer :genres, array: true, default: []       # Array of genres for the movie
+      t.boolean :is_active, default: true               # Whether the movie is active or not (i.e., published)
     end
 
     add_index :movies, :slug, unique: true, name: 'index_movies_on_slug'

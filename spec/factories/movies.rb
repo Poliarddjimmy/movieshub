@@ -1,15 +1,16 @@
 FactoryBot.define do
   factory :movie do
-    title { "MyString" }
-    plot { "MyText Plot" }
-    synopsis { "MyText synopsis" }
-    actors { ["MyString"] }
-    release_year { 1900 }
-    director { "MyString" }
-    language { "MyString" }
-    duration { "MyString" }
-    rating { 1 }
-    poster_url { "MyString" }
+    title { "Inception" }
+    plot { "A mind-bending thriller about entering dreams." }
+    synopsis { "A skilled thief who steals corporate secrets by infiltrating the subconscious." }
+    actors { ["Leonardo DiCaprio", "Joseph Gordon-Levitt"] }
+    release_year { 2010 }
+    director { "Christopher Nolan" }
+    language { "English" }
+    duration { 2 }
+    rating { :PG_13 }
+    poster_url { "http://example.com/inception.jpg" }
     genres { [1, 2] }
+    is_active { true }
   end
 end

@@ -2,21 +2,7 @@
 require 'rails_helper'
 
 RSpec.describe Movie, type: :model do
-  let(:valid_movie) do
-    Movie.new(
-      title: "Inception",
-      plot: "A mind-bending thriller about entering dreams.",
-      synopsis: "A skilled thief who steals corporate secrets by infiltrating the subconscious.",
-      actors: ["Leonardo DiCaprio", "Joseph Gordon-Levitt"],
-      release_year: 2010,
-      director: "Christopher Nolan",
-      language: "English",
-      duration: 2,
-      rating: :PG_13,
-      poster_url: "http://example.com/inception.jpg",
-      genres: [1, 2]
-    )
-  end
+  let(:valid_movie) { build(:movie) }
 
   describe "validations" do
     it "is valid with valid attributes" do
