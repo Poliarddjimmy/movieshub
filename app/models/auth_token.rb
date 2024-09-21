@@ -3,9 +3,8 @@ class AuthToken
     Rails.application.secrets.secret_key_base
   end
 
-  def self.token(user)
-    # payload = { user_id: user.id, exp: 0.5.hours.from_now.to_i }
-    payload = { user_id: user.id }
+  def self.token(user, exp = 0.5.hours.from_now.to_i)
+    payload = { user_id: user.id, exp: exp }
     JsonWebToken.sign(payload, key: key)
   end
 
@@ -19,9 +18,11 @@ class AuthToken
     nil
   end
 
-  def self.logout
-    # JWTs are stateless; typical logout might involve changing the secret or token invalidation
-    # Here, we return nil for simplicity
-    nil
+  def self.logout(token)
+    Blacklist.create(token: token) if token
+  end
+
+  def self.token_valid?(token)
+    !Blacklist.exists?(token: token)
   end
 end

@@ -25,6 +25,9 @@ class GraphqlController < ApplicationController
     return nil if request.headers["Authorization"].blank?
     token = request.headers["Authorization"].split(" ").last
 
+    return nil unless AuthToken.token_valid?(token)
+    # AuthToken.logout(token)
+
     if token.blank?
       return nil
     else

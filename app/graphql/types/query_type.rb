@@ -4,8 +4,10 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
-
     field :fetch_profile, resolver: Queries::FetchProfile
     field :fetch_profiles, resolver: Queries::FetchProfiles
+
+    field :fetch_movies, resolver: Queries::FetchMovies
+    field :fetch_movie, resolver: Queries::FetchMovie
   end
 end

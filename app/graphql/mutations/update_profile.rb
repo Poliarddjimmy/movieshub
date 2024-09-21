@@ -8,6 +8,8 @@ module Mutations
     field :errors, [String], null: false
 
     def resolve(id:, name: nil)
+      raise GraphQL::ExecutionError, "not authorized" unless context[:current_user]
+
       profile = Profile.find_by(id: id)
 
       if profile.nil?

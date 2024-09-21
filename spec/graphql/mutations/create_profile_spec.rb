@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Mutations::CreateProfile, type: :request do
   let (:user) { create(:user) }
   let (:params) { { name: 'Test Profile', user_id: user.id } }
+  let(:token) { AuthToken.token(user, 0.00833333.hours.from_now.to_i) }
 
   let(:mutation) do
     <<~GQL
@@ -28,7 +29,7 @@ RSpec.describe Mutations::CreateProfile, type: :request do
   end
 
   it 'creates a profile successfully' do
-    post '/graphql', params: { query: mutation, variables: variables }
+    post '/graphql', params: { query: mutation, variables: variables }, headers: { 'Authorization': "Bearer #{token}" }
 
     json = JSON.parse(response.body)
     expect(json['data']['createProfile']).to include(
@@ -38,7 +39,7 @@ RSpec.describe Mutations::CreateProfile, type: :request do
 
   it 'should not create a profile with invalid name' do
     variables[:input][:name] = 'Te'
-    post '/graphql', params: { query: mutation, variables: variables }
+    post '/graphql', params: { query: mutation, variables: variables }, headers: { 'Authorization': "Bearer #{token}" }
 
     json = JSON.parse(response.body)
     expect(json['data']['createProfile']['errors']).to include('The name must be at least 3 characters')
@@ -46,7 +47,7 @@ RSpec.describe Mutations::CreateProfile, type: :request do
 
   it 'should raise error if the user does not exist' do
     variables[:input][:userId] = 0
-    post '/graphql', params: { query: mutation, variables: variables }
+    post '/graphql', params: { query: mutation, variables: variables }, headers: { 'Authorization': "Bearer #{token}" }
 
     json = JSON.parse(response.body)
     expect(json['data']['createProfile']['errors']).to include('User not found')
@@ -55,7 +56,7 @@ RSpec.describe Mutations::CreateProfile, type: :request do
   it 'should not create a profile it he user already has teb profile' do
     create(:profile, user: user)
     10.times { user.profiles.create(name: 'Profile') }
-    post '/graphql', params: { query: mutation, variables: variables }
+    post '/graphql', params: { query: mutation, variables: variables }, headers: { 'Authorization': "Bearer #{token}" }
 
     json = JSON.parse(response.body)
     expect(json['data']['createProfile']).to include(
