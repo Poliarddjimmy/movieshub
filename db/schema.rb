@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_20_032921) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_21_044642) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,6 +19,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_20_032921) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["token"], name: "index_blacklists_on_token", unique: true
+  end
+
+  create_table "genres", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "slug"
+    t.integer "popularity"
+    t.boolean "is_active", default: false, null: false
+    t.string "image_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_genres_on_name", unique: true
+    t.index ["slug"], name: "index_genres_on_slug", unique: true
   end
 
   create_table "movies", force: :cascade do |t|
@@ -36,6 +49,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_20_032921) do
     t.datetime "updated_at", null: false
     t.string "slug", null: false
     t.integer "genres", default: [], array: true
+    t.boolean "is_active", null: false
     t.index ["slug"], name: "index_movies_on_slug", unique: true
   end
 

@@ -9,5 +9,8 @@ module Types
 
     field :fetch_movies, resolver: Queries::FetchMovies
     field :fetch_movie, resolver: Queries::FetchMovie
+
+    field :fetch_genres, resolver: Queries::FetchGenres
+    field :fetch_genre, resolver: Queries::FetchGenre
   end
 end
