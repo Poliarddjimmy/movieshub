@@ -1,5 +1,10 @@
 module Types
   class MutationType < Types::BaseObject
+    field :delete_review, mutation: Mutations::DeleteReview
+    field :update_review, mutation: Mutations::UpdateReview
+    field :create_review, mutation: Mutations::CreateReview
+    field :update_watching, mutation: Mutations::UpdateWatching
+    field :create_watching, mutation: Mutations::CreateWatching
     field :delete_movie_genre, mutation: Mutations::DeleteMovieGenre
     field :create_movie_genre, mutation: Mutations::CreateMovieGenre
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_21_211638) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_23_213707) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,13 +53,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_21_211638) do
     t.string "director"
     t.string "language"
     t.integer "duration"
-    t.integer "rating"
+    t.integer "rating", default: 0, null: false
     t.string "poster_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug", null: false
     t.integer "genres", default: [], array: true
-    t.boolean "is_active", null: false
+    t.boolean "is_active", default: true, null: false
     t.index ["slug"], name: "index_movies_on_slug", unique: true
   end
 
@@ -69,6 +69,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_21_211638) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.text "content"
+    t.string "reviewable_type", null: false
+    t.bigint "reviewable_id", null: false
+    t.bigint "user_id", null: false
+    t.string "rating", default: "1", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reviewable_type", "reviewable_id"], name: "index_reviews_on_reviewable"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -82,7 +94,26 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_21_211638) do
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
+  create_table "watchings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "movie_id", null: false
+    t.bigint "profile_id", null: false
+    t.datetime "started_at", precision: nil
+    t.datetime "finished_at", precision: nil
+    t.string "progress", default: "0"
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id"], name: "index_watchings_on_movie_id"
+    t.index ["profile_id"], name: "index_watchings_on_profile_id"
+    t.index ["user_id"], name: "index_watchings_on_user_id"
+  end
+
   add_foreign_key "movie_genres", "genres"
   add_foreign_key "movie_genres", "movies"
   add_foreign_key "profiles", "users"
+  add_foreign_key "reviews", "users"
+  add_foreign_key "watchings", "movies"
+  add_foreign_key "watchings", "profiles"
+  add_foreign_key "watchings", "users"
 end

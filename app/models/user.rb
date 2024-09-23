@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   has_many :profiles, dependent: :destroy
+  has_many :watchings, dependent: :destroy
 
   has_secure_password
 

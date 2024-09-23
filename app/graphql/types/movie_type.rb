@@ -15,6 +15,7 @@ module Types
     field :slug, String, null: false
     field :genres, [Types::GenreType], null: true
     field :movie_genres, [Types::MovieGenreType], null: true
+    field :reviews, [Types::ReviewType], null: true
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 

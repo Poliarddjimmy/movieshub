@@ -12,5 +12,7 @@ module Types
 
     field :fetch_genres, resolver: Queries::FetchGenres
     field :fetch_genre, resolver: Queries::FetchGenre
+
+    field :watchings, resolver: Queries::Watchings
   end
 end
