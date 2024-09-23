@@ -1,4 +1,6 @@
 class Movie < ApplicationRecord
+  has_many :movie_genres, dependent: :destroy
+  # has_many :genres, through: :movie_genres
 
   validates :title, presence: true, length: { minimum: 3 }
   validates :plot, presence: true, length: { minimum: 10 }
@@ -12,6 +14,7 @@ class Movie < ApplicationRecord
   enum rating: { G: 0, PG: 1, PG_13: 2, R: 3, NC_17: 4 }
 
   after_validation :set_slug
+  after_create :create_movie_genres
 
   validate do |movie|
     movie.errors.add(:base, "The title is Required") if movie.title.blank?
@@ -35,6 +38,12 @@ class Movie < ApplicationRecord
   end
 
   private
+
+  def create_movie_genres
+    genres.each do |genre_id|
+      MovieGenre.create(movie_id: id, genre_id: genre_id)
+    end
+  end
 
   def parametrized_title
     title.parameterize if title

@@ -13,8 +13,15 @@ module Types
     field :rating, Integer, null: true
     field :poster_url, String, null: true
     field :slug, String, null: false
-    field :genres, [Integer], null: true
+    field :genres, [Types::GenreType], null: true
+    field :movie_genres, [Types::MovieGenreType], null: true
     field :created_at, GraphQL::Types::ISO8601DateTime, null: false
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+
+    def genres
+      object.genres.map do |genre_id|
+        Genre.find(genre_id)
+      end
+    end
   end
 end

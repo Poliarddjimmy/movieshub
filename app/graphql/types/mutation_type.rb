@@ -1,5 +1,8 @@
 module Types
   class MutationType < Types::BaseObject
+    field :delete_movie_genre, mutation: Mutations::DeleteMovieGenre
+    field :create_movie_genre, mutation: Mutations::CreateMovieGenre
+
     field :update_genre, mutation: Mutations::UpdateGenre
     field :create_genre, mutation: Mutations::CreateGenre
 
