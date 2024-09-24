@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_23_213707) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_23_233209) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,6 +19,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_213707) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["token"], name: "index_blacklists_on_token", unique: true
+  end
+
+  create_table "episodes", force: :cascade do |t|
+    t.bigint "season_id", null: false
+    t.integer "episode_number", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.integer "duration", null: false
+    t.string "video_url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["season_id", "episode_number"], name: "index_episodes_on_season_id_and_episode_number", unique: true
+    t.index ["season_id"], name: "index_episodes_on_season_id"
   end
 
   create_table "genres", force: :cascade do |t|
@@ -83,6 +96,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_213707) do
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
+  create_table "seasons", force: :cascade do |t|
+    t.bigint "movie_id", null: false
+    t.string "season_number", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id", "season_number"], name: "index_seasons_on_movie_id_and_season_number", unique: true
+    t.index ["movie_id"], name: "index_seasons_on_movie_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -109,10 +133,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_213707) do
     t.index ["user_id"], name: "index_watchings_on_user_id"
   end
 
+  add_foreign_key "episodes", "seasons"
   add_foreign_key "movie_genres", "genres"
   add_foreign_key "movie_genres", "movies"
   add_foreign_key "profiles", "users"
   add_foreign_key "reviews", "users"
+  add_foreign_key "seasons", "movies"
   add_foreign_key "watchings", "movies"
   add_foreign_key "watchings", "profiles"
   add_foreign_key "watchings", "users"

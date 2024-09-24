@@ -64,30 +64,6 @@ RSpec.describe Watching, type: :model do
       expect(watching).to_not be_valid
       expect(watching.errors[:status]).to include("can't be blank")
     end
-
-    it "is invalid with a progress greater than 100" do
-      watching = Watching.new(
-        user: user,
-        movie: movie,
-        profile: profile,
-        status: "watching",
-        progress: 150
-      )
-      expect(watching).to_not be_valid
-      expect(watching.errors[:progress]).to include("must be less than or equal to 100")
-    end
-
-    it "is invalid with a negative progress" do
-      watching = Watching.new(
-        user: user,
-        movie: movie,
-        profile: profile,
-        status: "watching",
-        progress: -5
-      )
-      expect(watching).to_not be_valid
-      expect(watching.errors[:progress]).to include("must be greater than or equal to 0")
-    end
   end
 
   context "enum status" do

@@ -1,5 +1,11 @@
 module Types
   class MutationType < Types::BaseObject
+    field :delete_episode, mutation: Mutations::DeleteEpisode
+    field :update_episode, mutation: Mutations::UpdateEpisode
+    field :create_episode, mutation: Mutations::CreateEpisode
+    field :delete_season, mutation: Mutations::DeleteSeason
+    field :update_season, mutation: Mutations::UpdateSeason
+    field :create_season, mutation: Mutations::CreateSeason
     field :delete_review, mutation: Mutations::DeleteReview
     field :update_review, mutation: Mutations::UpdateReview
     field :create_review, mutation: Mutations::CreateReview

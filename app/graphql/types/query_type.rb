@@ -14,5 +14,8 @@ module Types
     field :fetch_genre, resolver: Queries::FetchGenre
 
     field :watchings, resolver: Queries::Watchings
+
+
+    field :fetch_episode, resolver: Queries::FetchEpisode
   end
 end
